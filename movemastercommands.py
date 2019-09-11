@@ -1,90 +1,332 @@
 
-def format_command(command_handler, command_array):
-    """Reacomoda la tupla que se le pase de forma que pueda ser escrita en el Robot
-    NOTA: Esta es la forma dificil de hacerla en codigo"""
-
-    command_range = len(command_array)
-    for i in range(command_range):
-        if i == 0:
-            data = command_array[i] + " "
-        elif i == (command_range-1):
-            if isinstance(command_array[i], float):
-                if command_array[i] > 0:
-                    data = data + "+"+str(command_array[i])
-                else:
-                    data = data+str(command_array[i])
-            else:
-                data = data + str(command_array[i])
-        else:
-            if isinstance(command_array[i], float):
-                if command_array[i] > 0:
-                    data = data + "+"+str(command_array[i]) + ", "
-                else:
-                    data = data+str(command_array[i]) + ", "
-            else:
-                data = data + str(command_array[i]) + ", "
-    print("[INFO] Comando a enviar: {}".format(data))
-    command_handler.send(data)
-
-
-def DP(command_handler):
+def DP():
     """
     Decrement Position
     Movest he robot to a predefine position with a position numbers smaller than the current one.
     """
-    command_handler.send("DP")
+    command = "DP"
+    return command
 
 
-def DW(command_handler, x, y, z):
+def DW(travel_x, travel_y, travel_z):
     """
     Draw
     """
-    data = ["DW", x, y, z]
-    command_handler.format_command(data)
+    command = "DW {}, {}, {}".format(travel_x, travel_y, travel_z)
+    return command
 
 
-def HE(command_handler, PositionNumber):
+def HE(PositionNumber):
     """
     Here
     Definets the coordinates of the current position by assigning a positionn number to it
     """
-    data = ["HE", PositionNumber]
-    command_handler.format_command(data)
+    command = "HE {}".format(PositionNumber)
+    return command
 
 
-def HO(command_handler):
+def HO():
     """
     Home
     reference posotion in the cartesioan coordenate system
     """
-    command_handler.send("HO")
+    command = "HO"
+    return command
 
 
-def IP(command_handler):
+def IP():
     """
     Increment Position
     """
-    command_handler.send("IP")
+    command = "IP"
+    return command
 
 
-def MA(command_handler, Pa, Pb, OC):
+def MA(position_a, position_b, grip_pos=None):
     """
     Move Approach
     """
-    data = ["MA", Pa, Pb, OC]
-    command_handler.format_command(data)
+    if grip_pos is not None:
+        command = "MA {}, {}, {}".format(position_a, position_b, grip_pos)
+    else:
+        command = "MA {}, {}".formar(position_a, position_b)
+        
+    return command
 
 
-def MO(command_handler, pos_num, command_number=None):
-    command_handler.send("MO {}".format(pos_num))
+def MC(position_a, position_b):
+    command = "MC {}, {}".format(position_a, position_b)
+    return command
+	
+
+def MJ(waist_angle=0, shoulder_angle=0, elbow_angle=0, pitch_angle=0, roll_angle=0):
+    command = "MJ {}, {}, {}, {}, {}".format(waist_angle, shoulder_angle, elbow_angle, pitch_angle, roll_angle)
+    return command
 
 
-def NT(command_handler):
-    command_handler.send("NT")
+def MO(pos_num, grip_pos=None):
+    if grip_pos is not None:
+        command = "MO {}, {}".format(pos_num, grip_pos)
+    else:
+        command = "MO {}".format(pos_num)
+
+    return command
+	
+
+def MP(x, y, z, pitch_angle, roll_angle):
+	command = "MP {}, {}, {}, {}, {}".format(x, y, z, pitch_angle, roll_angle)
+	return command
+	
+
+def MS(pos_num, inter_points, grip_pos=None):
+	if grip_pos is not None:
+		command = "MS {}, {}, {}".format(pos_num, inter_points, grip_pos)
+	else:
+		command = "MS {}, {}".format(pos_num, inter_points)
+	
+	return command
+
+
+def MT(pos_num, travel_dist, grip_pos=None):
+	if grip_pos is not None:
+		command = "MT {}, {}, {}".format(pos_num, travel_dist, grip_pos)
+	else:
+		command = "MT {}, {}".format(pos_num, travel_dist)
+	
+	return command
+
+
+def NT():
+    command = "NT"
+    return command
+
+
+def OG():
+	command = "OG"
+	return command
+
+
+def PA(pallet_num, col_grid_points, row_grid_points):
+	command = "PA {}, {}, {}".format(pallet_num, col_grid_points, row_grid_points)
+	return command
+
+
+def PC(position_a, position_b=None):
+	if position_b is not None:
+		command = "PC {}, {}".format(position_a, position_b)
+	else:
+		command = "PC {}".format(position_a)
+	
+	return command
+
+
+def PD(pos_num, x, y, z, pitch_angle, roll_angle):
+	command = "PD {}, {}, {}, {}, {}, {}".format(pos_num, x, y, z, pitch_angle, roll_angle)
+	return command
+	
+
+def PL(position_a, position_b):
+	command = "PL {}, {}".format(position_a, position_b)
+	return command
+
+
+def PT(pallet_num):
+	command = "PT {}".format(pallet_num)
+	return command
+
+
+def PX(position_a, position_b):
+	command = "PX {}, {}".format(position_a, position_b)
+	return command
+
+
+def SF(position_a, position_b):
+	command = "SF {}, {}".format(position_a, position_b)
+	return command
+
+
+def SP(speed_level, variable_level=None):
+	if variable_level is not None:
+		command = "SP {}, {}".format(speed_level, variable_level)
+	else:
+		command = "SP {}".format(speed_level)
+	
+	return command
+
+
+def TI(time_counter):
+	command = "TI {}".format(time_counter)
+	return command
+
+
+def TL(tool_length):
+	command = "TL {}".format(tool_length)
+	return command
+
+
+def CP(count_num):
+	command = "CP {}".format(count_num)
+	return command
+
+
+def DA(bit_num):
+	command = "DA {}".format(bit_num)
+	return command
+
+
+def DC(count_num):
+	command = "DC {}".format(count_num)
+	return command
+
+
+def DL(line_a, line_b=None):
+	if line_b is not None:
+		command = "DL {}, {}".format(line_a, line_b)
+	else:
+		command = "DL {}".format(line_a)
+	
+	return command
+
+
+def EA(sign, bit_num, line_num):
+	command = "EA {}{}, {}".format(sign, bit_num, line_num)
+	return command
+
+
+def ED():
+	command = "ED"
+	return command
+
+
+def GT(line_num):
+	command = "GT {}".format(line_num)
+	return command
+
+
+def IC(count_num):
+	command = "IC {}".format(count_num)
+	return command
+
+
+def NW():
+	command = "NW"
+	return command
+
+
+def NX():
+	command = "NX"
+	return command
+
+
+def RC(q_cycle):
+	command = "RC {}".format(q_cycle)
+	return command
+
+
+def RN(start_line_num, end_line_num=None):
+	if end_line_num is not None:
+		command = "RN {}, {}".format(start_line_num, end_line_num)
+	else:
+		command = "RN {}".format(start_line_num)
+	
+	return command
+
+
+def RT():
+	command = "RT"
+	return command
+
+
+def SC(count_num, val=None):
+	if val is not None:
+		command = "SC {}, {}".format(count_num, val)
+	else:
+		command = "SC {}".format(count_num)
+	
+	return command
+
+
+def GC():
+	command = "GC"
+	return command
+
+
+def GF(val):
+	command = "GF {}".format(val)
+	return command
+
+
+def GO():
+	command = "GO"
+	return command
+
+
+def GP(start_grip_force, retain_grip_force, retention_time):
+	command = "GP {}, {}, {}".format(start_grip_force, retain_grip_force, retention_time)
+	return command
+
+def ID():
+	command = "ID"
+	return command
+
+
+def IN():
+	command = "ID"
+	return command
+
+
+def OT(output_data):
+	command = "OT {}".format(output_data)
+	return command
+
+
+def CR(count_num):
+    command = "CR {}".format(count_num)
+    return command
+
+
+def DR():
+    command = "DR"
+    return command
+
+
+def ER():
+    command = "ER"
+    return command
+
+
+def LR(line_num):
+    command = "LR {}".format(line_num)
+    return command
+
+
+def PR(pos_num):
+    command = "PR {}".format(pos_num)
+    return command
+
+
+def WH():
+    command = "WH"
+    return command
+
+
+def RS():
+    command = "RS"
+    return command
+
+
+def TR():
+    command = "TR"
+    return command
+
+
+def WR():
+    command = "WR"
+    return command
 
 
 class Execute:
-    """Enviar un comando directamente al robot para su ejecución inmediata"""
+    """Envia un comando directamente al robot para su ejecución inmediata"""
 
     def __init__(self, rob_handler):
         self.robot = rob_handler
