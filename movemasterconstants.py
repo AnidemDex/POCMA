@@ -76,7 +76,7 @@ def MC(position_a, position_b):
             raise RangePositionError()
     else:
         raise RobotPositionError()
-	
+
 
 def MJ(waist_angle=0, shoulder_angle=0, elbow_angle=0, pitch_angle=0, roll_angle=0):
     """
@@ -101,7 +101,7 @@ def MO(pos_num, grip_pos=None):
         return command
     else:
         raise RobotPositionError()
-	
+
 
 def MP(x, y, z, pitch_angle, roll_angle):
 	command = "MP {}, {}, {}, {}, {}".format(x, y, z, pitch_angle, roll_angle)
