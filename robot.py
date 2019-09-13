@@ -1,3 +1,4 @@
+# encoding: utf-8
 from serial import Serial
 from serial import SerialException
 import movemastercommands as rob_commmand
@@ -65,6 +66,7 @@ class RVM1(Robot):
             self.conexion.parity = "O"
             self.conexion.stopbits = 2
             self.conexion.rtscts = True
+            self.conexion.timeout= 3.0
 
             self.conexion.open()
             if self.conexion.isOpen():
