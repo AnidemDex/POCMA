@@ -4,13 +4,13 @@
 [![Size](https://img.shields.io/github/repo-size/dastmema/POCMA)](#)
 # POCMA
 > Programa Orientado a la Celda de Manufactura Automatizada  
-  
+
 ## Descripción
 Aqui se alojará el programa responsable del manejo de la celda de manufactura del Centro de Automatización de Procesos.
   
 El objetivo es simple: reimplementar el sistema de control actual **_reestructurando_** todo su código fuente.
 
-##Características
+## Características
 ###### Hecho en Python 3  
 Asi los estudiantes pueden revisar el código y aprender del mismo.
 
@@ -32,7 +32,7 @@ Perfectamente controlable a traves del protocolo de comunicación `OPC-UA`, pose
  - [ ] Torno
  - [ ] Fresadora
 ##### Interfaz
- - [ ] Diseño
+ - [X] Diseño
  - [ ] Implementación
 ##### Módulo de comunicación
  - [ ] Servidores
