@@ -1,7 +1,7 @@
 # encoding: utf-8
 from serial import Serial
 from serial import SerialException
-import movemastercommands as rob_commmand
+import movemastercommands as rob_command
 
 
 class Robot:
@@ -51,7 +51,8 @@ class RVM1(Robot):
     Clase creada para el manejo exclusivo del robot MoveMaster"""
 
     def __init__(self):
-        self.execute = rob_commmand.Execute(self)
+        self.execute = rob_command.Execute(self)
+        self.program = rob_command.Program(self)
         """Propiedad creada para el envio de comandos al instante"""
 
         Robot.__init__(self)

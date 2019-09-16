@@ -6,10 +6,8 @@ class Execute:
     Execute.<Command>()
     Envia un comando directamente al robot para su ejecución inmediata
     """
-
     def __init__(self, rob_handler):
         self.robot = rob_handler
-
 
     def DP(self):
         self.robot.send(command.DP())
@@ -252,29 +250,300 @@ class Execute:
 
     def CR(self, count):
         self.robot.send(command.CR(count))
+        reply = self.read()
+        return reply
 
 
     def DR(self):
         self.robot.send(command.DR())
+        reply = self.read()
+        return reply
 
 
     def ER(self):
         self.robot.send(command.ER())
+        reply = self.read()
+        return reply
 
 
     def LR(self, line):
         self.robot.send(command.LR(line))
+        reply = self.read()
+        return reply
 
 
     def PR(self, pos_num):
         self.robot.send(command.PR(pos_num))
+        reply = self.read()
+        return reply
 
 
     def WH(self):
         self.robot.send(command.WH())
-        self.robot.conexion.flush()
-        self.read()
+        reply = self.read()
+        return reply
+
+    def RS(self):
+        self.robot.send(command.RS())
+
+    def TR(self):
+        self.robot.send(command.TR())
+
+
+    def WR(self):
+        self.robot.send(command.WR())
+
 
     def read(self):
-        line = str(self.robot.conexion.readline())
-        print(line)
+        eol = b'\r' #End Of File. Con eso modificas el terminador de linea
+        leneol = len(eol)
+        line = bytearray()
+
+        self.robot.conexion.flush()
+        while True:
+            character = self.robot.conexion.read(1)
+            if character:
+                line += character
+                if line[-leneol:] == eol:
+                    break
+            else:
+                break
+        del line[-leneol:]
+        return bytes(line)
+
+class Program:
+    """
+    Program.<Command>()
+    Crea una lista temporal de comandos para ser escritos en la memoria del robot
+    para luego ser ejecutados con el comando Execute.RN()
+    """
+    def __init__(self, rob_handler):
+        self.robot = rob_handler
+        self.line = 0
+
+    
+    def clear_lines(self):
+        """
+        Pone en 0 el contador de linea para esccribir un nuevo programa
+        """
+        self.line = 0
+
+    def set_lines(self, value):
+        """
+        Establece el contador de linea en el valor deseado para continuar desde
+        ese punto la programación
+        """
+        self.line = value
+
+
+    def DP(self):
+        self.line += 1
+        self.__program(command.DP())
+
+
+    def DW(self, x, y, z):
+        self.line += 1
+        self.__program(command.DW(x, y, z))
+
+
+    def HE(self, pos_num):
+        try:
+            self.line += 1
+            self.__program(command.HE(pos_num))
+        except command.RobotPositionError as error:
+            print(error)
+
+
+    def HO(self):
+        self.line += 1
+        self.__program(command.HO())
+
+
+    def IP(self):
+        self.__program(command.IP())
+
+
+    def MA(self, pos_a, pos_b, grip_pos=None):
+        try:
+            if grip_pos == None:
+                self.__program(command.MA(pos_a, pos_b))
+            else:
+                self.__program(command.MA(pos_a, pos_b, grip_pos))
+        except command.RobotPositionError as error:
+            print(error)
+
+    
+    def MC(self, pos_a, pos_b):
+        try:
+            self.__program(command.MC(pos_a, pos_b))
+        except command.RobotPositionError as error:
+            print(error)
+        except command.RobotPositionError as error:
+            print(error)
+
+
+    def MO(self, pos_num, grip_pos=None):
+        try:
+            if grip_pos == None:
+                self.__program(command.MO(pos_num))
+            else:
+                self.__program(command.MO(pos_num, grip_pos))
+        except command.RobotPositionError as error:
+            print(error)
+
+
+    def MS(self, pos_num, inter_points, grip_pos=None):
+        try:
+            if grip_pos == None:
+                self.__program(command.MS(pos_num, inter_points))
+            else:
+                self.__program(command.MS(pos_num, inter_points, grip_pos))
+        except command.RobotPositionError as error:
+            print(error)
+        except command.RangePositionError as error:
+            print(error)
+
+
+    def MT(self, pos_num, travel, grip_pos=None):
+        try:
+            if grip_pos == None:
+                self.__program(command.MT(pos_num, travel))
+            else:
+                self.__program(command.MT(pos_num, travel, grip_pos))
+        except command.RobotPositionError as error:
+            print(error)
+
+
+    def NT(self):
+        self.__program(command.NT())
+
+
+    def OG(self):
+        self.__program(command.OG())
+
+    
+    def PA(self, pallet, col, row):
+        try:
+            self.__program(command.PA(pallet, col, row))
+        except command.PalletNumberError as error:
+            print(error)
+        except command.GridColPointError as error:
+            print(error)
+
+
+    def PL(self, pos_a, pos_b):
+        try:
+            self.__program(command.PL(pos_a, pos_b))
+        except command.RobotPositionError as error:
+            print(error)
+
+
+    def PT(self, pallet):
+        try:
+            self.__program(command.PT(pallet))
+        except command.RobotPalletNumberError as error:
+            print(error)
+
+
+    def PX(self, pos_a, pos_b):
+        try:
+            self.__program(command.PX(pos_a, pos_b))
+        except command.RobotPositionError as error:
+            print(error)
+
+
+    def SF(self, pos_a, pos_b):
+        try:
+            self.__program(command.SF(pos_a, pos_b))
+        except command.RobotPositionError as error:
+            print(error)
+
+
+    def SP(self, speed, var=None):
+        try:
+            self.__program(command.SP(speed, var))
+        except command.RobotInvalidSpeedError as error:
+            print(error)
+
+
+    def TI(self, time):
+        self.__program(command.TI(time))
+
+
+    def TL(self, length):
+        self.__program(command.TL(length))
+
+
+    def CP(self, count):
+        self.__program(command.CP(count))
+        
+
+    def DA(self, bit):
+        self.__program(command.DA(bit))
+
+
+    def DC(self, count):
+        self.__program(command.DC(count))
+
+
+    def EA(self, sign, bit, line):
+        self.__program(command.EA(sign, bit, line))
+
+
+    def ED(self):
+        self.__program(command.ED())
+
+
+    def GT(self, line):
+        self.__program(command.GT(line))
+
+
+    def IC(self, count):
+        self.__program(command.IC(count))
+
+
+    def NX(self):
+        self.__program(command.NX())
+
+
+    def RC(self, cycle):
+        self.__program(command.RC(cycle))
+
+
+    def RT(self):
+        self.__program(command.RT())
+
+
+    def SC(self, count, val=None):
+        self.__program(command.SC(count, val))
+
+
+    def GC(self):
+        self.__program(command.GC())
+
+
+    def GF(self, val):
+        self.__program(command.GF(val))
+
+    def GO(self):
+        self.__program(command.GO())
+
+
+    def GP(self, s_grip, r_grip, r_time):
+        self.__program(command.GP(s_grip, r_grip, r_time))
+
+
+    def ID(self):
+        self.__program(command.ID())
+
+
+    def IN(self):
+        self.__program(command.IN())
+
+    def OT(self, data):
+        self.__program(command.OT(data))
+
+    def __program(self, arg):
+        comando = "{} {}".format(self.line, arg)
+        self.robot.send(comando)
+
