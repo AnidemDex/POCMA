@@ -12,7 +12,7 @@ El objetivo es simple: reimplementar el sistema de control actual **_reestructur
 
 ## Características
 ###### Hecho en Python 3  
-Asi los estudiantes pueden revisar el código y aprender del mismo.
+Con un codigo totalmente documentado, siguiendo en lo posible los lineamientos del [Zen de Python](https://github.com/dastmema/trashcan/blob/master/python_zen.png). Logrando asi un muy buen ejemplo estructural de código que cualquiera (tanto estudiantes, profesores y personas ajenas) pueden revisar y aprender del mismo.
 
 ###### Diseñado para ser rapido y eficiente.  
 Su interfaz gráfica fue pensada para ser trabajada de forma modular. Esto quiere decir que si bien puede manejar toda la celda de manufactura al unísono como en el mejor concierto de Paganini, tambien puede manejar _cualquier_ parte de la celda de forma independiente.
@@ -28,11 +28,13 @@ Perfectamente controlable a traves del protocolo de comunicación `OPC-UA`, pose
 > Porque todo suena muy bonito pero no es real... Aun.
 
 ##### Librerias
- - [ ] RVM1
+ - [X] RVM1
  - [ ] Torno
  - [ ] Fresadora
 ##### Interfaz
  - [X] Diseño
  - [ ] Implementación
 ##### Módulo de comunicación
- - [ ] Servidores
+ - [ ] Servidor OPC-UA de la celda de manufactura
+ - [ ] Servidor HTML para manejo externo
+ - [ ] Servidor provisional para confirmaciones
