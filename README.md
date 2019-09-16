@@ -29,12 +29,10 @@ Perfectamente controlable a traves del protocolo de comunicación `OPC-UA`, pose
 
 ##### Librerias
  - [X] RVM1
- - [ ] Torno
- - [ ] Fresadora
+ - [X] Torno
+ - [X] Fresadora
 ##### Interfaz
  - [X] Diseño
  - [ ] Implementación
 ##### Módulo de comunicación
  - [ ] Servidor OPC-UA de la celda de manufactura
- - [ ] Servidor HTML para manejo externo
- - [ ] Servidor provisional para confirmaciones
