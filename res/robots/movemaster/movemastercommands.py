@@ -547,3 +547,12 @@ class Program:
         comando = "{} {}".format(self.line, arg)
         self.robot.send(comando)
 
+# FIXME Añade los comandos de ROBOTKEYS
+class Cnc:
+    def __init__(self, rob_handler):
+        self.robot = rob_handler
+
+# FIXME Añade los comandos de RobotT
+class Torno:
+    def __init__(self, rob_handler):
+        self.robot = rob_handler

@@ -69,6 +69,9 @@ class RVM1(Robot):
         """Propiedad creada para el envio de comandos al instante"""
         self.program = rob_command.Program(self)
         """Propiedad creada para la programación de comandos por linea"""
+        self.key_cnc = rob_command.Cnc(self)
+        """Propiedad creada para atajos"""
+        self.key_torno = rob_command.Torno(self)
 
         Robot.__init__(self)
 
