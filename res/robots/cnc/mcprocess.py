@@ -1,7 +1,7 @@
 from opcua import ua
 import time
 
-# FIXME REVISA ESTE CODIGO
+
 def RunMcStation(files, server_event, machine, robot, pieza):
 	"""
 	Funcion encargada de mecanizar una pieza
@@ -11,12 +11,12 @@ def RunMcStation(files, server_event, machine, robot, pieza):
 	robot: (Robot) Objeto encargado de mover el robot
 	pieza: (Int)
 	"""
-	robot.key_cnc.runM1()
+	robot.key_cnc.run_movement(1)
 	machine.execute.open_helper()
 
 	time.sleep(2)
 
-	robot.key_cnc.runM2()
+	robot.key_cnc.run_movement(2)
 	machine.execute.close_door()
 	time.sleep(1)
 
@@ -34,11 +34,11 @@ def RunMcStation(files, server_event, machine, robot, pieza):
 		ch = ch +1			
 	time.sleep(1) 
 
-	robot.key_cnc.runM3()
+	robot.key_cnc.run_movement(3)
 	machine.execute.open_helper()
 	time.sleep(2)
 
-	robot.key_cnc.runM3()
+	robot.key_cnc.run_movement(4)
 	time.sleep(1)
 
 	reply = "Mecanizado Completado"

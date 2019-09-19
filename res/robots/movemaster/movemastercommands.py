@@ -1,5 +1,8 @@
 # encoding: utf-8
-import movemasterconstants as command
+try:
+    import movemasterconstants as command
+except:
+    import res.robots.movemaster.movemasterconstants as command
 
 class Execute:
     """
@@ -7,6 +10,9 @@ class Execute:
     Envia un comando directamente al robot para su ejecución inmediata
     """
     def __init__(self, rob_handler):
+        """
+        rob_handler: (RVM1)
+        """
         self.robot = rob_handler
 
     def DP(self):
@@ -316,6 +322,7 @@ class Program:
     Program.<Command>()
     Crea una lista temporal de comandos para ser escritos en la memoria del robot
     para luego ser ejecutados con el comando Execute.RN()
+    Cada linea se suma sola en un digito de forma automatica con cada comando usado
     """
     def __init__(self, rob_handler):
         self.robot = rob_handler
@@ -337,25 +344,21 @@ class Program:
 
 
     def DP(self):
-        self.line += 1
         self.__program(command.DP())
 
 
     def DW(self, x, y, z):
-        self.line += 1
         self.__program(command.DW(x, y, z))
 
 
     def HE(self, pos_num):
         try:
-            self.line += 1
             self.__program(command.HE(pos_num))
         except command.RobotPositionError as error:
             print(error)
 
 
     def HO(self):
-        self.line += 1
         self.__program(command.HO())
 
 
@@ -544,15 +547,157 @@ class Program:
         self.__program(command.OT(data))
 
     def __program(self, arg):
+        self.line += 1
         comando = "{} {}".format(self.line, arg)
         self.robot.send(comando)
 
-# FIXME Añade los comandos de ROBOTKEYS
+
 class Cnc:
     def __init__(self, rob_handler):
         self.robot = rob_handler
+        self.robot.program.set_lines(0)
+        self.line_movement1 = 0
+        self.line_movement2 = 0
+        self.line_movement3 = 0
+        self.line_movement4 = 0
 
-# FIXME Añade los comandos de RobotT
+    def teach_routine(self):
+        self.movement1()
+        self.movement2()
+        self.movement3()
+        self.movement4()
+
+
+    def movement1(self):
+        self.robot.program.MO(557,"C")
+        self.line_movement1 = self.robot.program.line
+        
+        self.robot.program.SP(8,"H")
+        
+        self.robot.program.MO(556,"C")
+        
+        self.robot.program.MO(555,"C")
+        
+        self.robot.program.MO(554,"C")
+        
+        self.robot.program.MO(550,"C")
+        
+        self.robot.program.MO(551,"C")
+        
+        self.robot.program.MO(552,"C")
+        
+        self.robot.program.SP(3,"H")
+        
+        self.robot.program.MS(553,8,"C")
+        
+        self.robot.program.GO()
+        
+        self.robot.program.SP(8,"H")
+        
+        self.robot.program.MS(552,5,"O")
+        
+        self.robot.program.MO(551,"O")
+        
+        self.robot.program.MO(550,"O")
+        
+        self.robot.program.MO(550,"O")
+        # 16
+
+    def movement2(self):
+        #salir de la maquina y esperar a que termine de maquinar
+
+        self.robot.program.GO()
+        self.line_movement2 = self.robot.program.line
+            
+        self.robot.program.TI(1)
+            
+        self.robot.program.SP(9,"H")
+            
+        self.robot.program.MO(557,"O")
+            
+        self.robot.program.MO(556,"O")
+            
+        self.robot.program.MO(555,"O")
+            
+        self.robot.program.MO(554,"O")
+            
+        self.robot.program.MO(550,"O")
+            
+        self.robot.program.MO(550,"O")
+        # 10
+
+    def movement3(self):
+        #entrar a la maquina a sujetar la pieza en la prensa antes de llevarla al pallet
+
+        self.program.SP(9,"H")
+        self.line_movement3 = self.robot.program.line
+            
+        self.program.MO(554,"O")
+            
+        self.program.MO(555,"O")
+            
+        self.program.MO(556,"O")
+            
+        self.program.MO(557,"O")
+            
+        self.program.SP(2,"H")
+            
+        self.program.MO(558,"O")
+            
+        self.program.GC()
+        # 8
+
+    def movement4(self):
+        #sacar la pieza de la prensa y llevarla al pallet, despues ir a esperar 
+        self.program.MO(557,"C")
+        self.line_movement4 = self.robot.program.line
+        
+        self.program.SP(8,"H")
+        
+        self.program.MO(556,"C")
+        
+        self.program.MO(555,"C")
+        
+        self.program.MO(554,"C")
+        
+        self.program.MO(550,"C")
+        
+        self.program.MO(551,"C")
+        
+        self.program.MO(552,"C")
+        
+        self.program.SP(3,"H")
+        
+        self.program.MS(553,8,"C")
+        
+        self.program.GO()
+        
+        self.program.SP(8,"H")
+        
+        self.program.MS(552,5,"O")
+        
+        self.program.MO(551,"O")
+        
+        self.program.MO(550,"O")
+        
+        
+        self.program.MO(550,"O")
+
+
+    def run_movement(self, movement):
+        self.robot.conexion.flush()
+
+        if movement == 1:
+            self.robot.execute.RN(self.line_movement1, self.line_movement2-1)
+        if movement == 2:
+            self.robot.execute.RN(self.line_movement2, self.line_movement3-1)
+        if movement == 3:
+            self.robot.execute.RN(self.line_movement3, self.line_movement4-1)
+        if movement == 4:
+            self.robot.execute.RN(self.line_movement4, self.robot.program.line)
+
+
+# FIXME Añade los comandos de Robot
 class Torno:
     def __init__(self, rob_handler):
         self.robot = rob_handler

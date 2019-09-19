@@ -1,8 +1,12 @@
 # encoding: utf-8
 from serial import Serial
 from serial import SerialException
-from movemaster import movemastercommands as rob_command
-from cnc import cnccommands as cnc_command
+try:
+    from movemaster import movemastercommands as rob_command
+    from cnc import cnccommands as cnc_command
+except:
+    from res.robots.movemaster import movemastercommands as rob_command
+    from res.robots.cnc import cnccommands as cnc_command
 
 
 class Robot:
@@ -27,7 +31,8 @@ class Robot:
                 print("\tVerifica que el robot esté conectado al puerto antes de enviar el comando")
                 print("[DETALLES] {}".format(error))
             else:
-                print("[INFO] {} enviado correctamente por {}".format(command, rob.conexion.name))
+                stri = "enviado correctamente por"
+                print("[INFO] {:20} {} {}".format(command, stri, rob.conexion.name))
         else:
             return rob
 
@@ -78,6 +83,7 @@ class RVM1(Robot):
     def connect(self, puerto):
         """
         Conecta el puerto del robot para el envío de comandos
+        puerto: (String) Un texto correspondiente al puerto a conectarse
         """
 
         try:
@@ -86,7 +92,7 @@ class RVM1(Robot):
             self.conexion.bytesize = 7
             self.conexion.parity = "O"
             self.conexion.stopbits = 2
-            self.conexion.rtscts = True
+            # self.conexion.rtscts = True
             self.conexion.timeout= 2.0
 
             self.conexion.open()

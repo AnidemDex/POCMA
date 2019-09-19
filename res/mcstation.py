@@ -18,8 +18,8 @@ class MCStation:
         ### CONFIGURACION ###
         self.server = Server()
 
-        url = "opc.tcp://{}:4840/MC/".format(IP)
-        self.server.set_endpoint(url)
+        self.url = "opc.tcp://{}:4840/MC/".format(IP)
+        self.server.set_endpoint(self.url)
 
         server_name = "POCMA_MCStation"
         self.server.set_server_name(server_name)
@@ -35,11 +35,11 @@ class MCStation:
 
         ### METODO PARA LLAMAR A LA FABRICACION DE PIEZA ###
         arg_archivo = ua.Argument()
-        arg_archivo.Name = "Pieza a fabricar"
+        arg_archivo.Name = "Pieza a fabricar ->"
         arg_archivo.DataType = ua.NodeId(ua.ObjectIds.Int32)
         arg_archivo.ValueRank = -1
         arg_archivo.ArrayDimensions = []
-        arg_archivo.Description = ua.LocalizedText("fabricar(pieza)")
+        arg_archivo.Description = ua.LocalizedText("fabricar(pieza_numero)")
 
         arg_reply = ua.Argument()
         arg_reply.Name = "Respuesta del servidor"
@@ -60,7 +60,8 @@ class MCStation:
         try:
             self.server.start()
         except Exception as error:
-            print(error)
+            print("[DETALLES] ", error)
+            print("[INFO] Revisa bien la IP {}".format(self.url))
         else:
             print("Servidor iniciado")
 
@@ -70,8 +71,3 @@ class MCStation:
         thread.start()
 
         return "Peticion de pieza {}".format(archivo)
-
-estacion = MCStation("192.168.0.103", "", "")
-estacion.server_start()
-while True:
-    pass
