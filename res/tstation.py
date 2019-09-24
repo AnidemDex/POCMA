@@ -8,7 +8,7 @@ from robots.cnc.tstation import RunStation
 class MCStation:
     def __init__(self, IP, machine, robot, file_source):
         """
-        Clase encargada de la creación de las propiedades del servidor para el centro de mecanizado
+        Clase encargada de la creaciï¿½n de las propiedades del servidor para el centro de mecanizado
         """
         self.cnc = machine
         self.movemaster = robot
