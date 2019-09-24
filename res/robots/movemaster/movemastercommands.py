@@ -562,9 +562,13 @@ class Cnc:
         self.line_movement4 = 0
 
     def teach_routine(self):
+        print("[INFO] Enseñando movimiento 1")
         self.movement1()
+        print("[INFO] Enseñando movimiento 2")
         self.movement2()
+        print("[INFO] Enseñando movimiento 3")
         self.movement3()
+        print("[INFO] Enseñando movimiento 4")
         self.movement4()
 
 
@@ -629,59 +633,59 @@ class Cnc:
     def movement3(self):
         #entrar a la maquina a sujetar la pieza en la prensa antes de llevarla al pallet
 
-        self.program.SP(9,"H")
+        self.robot.program.SP(9,"H")
         self.line_movement3 = self.robot.program.line
             
-        self.program.MO(554,"O")
+        self.robot.program.MO(554,"O")
             
-        self.program.MO(555,"O")
+        self.robot.program.MO(555,"O")
             
-        self.program.MO(556,"O")
+        self.robot.program.MO(556,"O")
             
-        self.program.MO(557,"O")
+        self.robot.program.MO(557,"O")
             
-        self.program.SP(2,"H")
+        self.robot.program.SP(2,"H")
             
-        self.program.MO(558,"O")
+        self.robot.program.MO(558,"O")
             
-        self.program.GC()
+        self.robot.program.GC()
         # 8
 
     def movement4(self):
         #sacar la pieza de la prensa y llevarla al pallet, despues ir a esperar 
-        self.program.MO(557,"C")
+        self.robot.program.MO(557,"C")
         self.line_movement4 = self.robot.program.line
         
-        self.program.SP(8,"H")
+        self.robot.program.SP(8,"H")
         
-        self.program.MO(556,"C")
+        self.robot.program.MO(556,"C")
         
-        self.program.MO(555,"C")
+        self.robot.program.MO(555,"C")
         
-        self.program.MO(554,"C")
+        self.robot.program.MO(554,"C")
         
-        self.program.MO(550,"C")
+        self.robot.program.MO(550,"C")
         
-        self.program.MO(551,"C")
+        self.robot.program.MO(551,"C")
         
-        self.program.MO(552,"C")
+        self.robot.program.MO(552,"C")
         
-        self.program.SP(3,"H")
+        self.robot.program.SP(3,"H")
         
-        self.program.MS(553,8,"C")
+        self.robot.program.MS(553,8,"C")
         
-        self.program.GO()
+        self.robot.program.GO()
         
-        self.program.SP(8,"H")
+        self.robot.program.SP(8,"H")
         
-        self.program.MS(552,5,"O")
+        self.robot.program.MS(552,5,"O")
         
-        self.program.MO(551,"O")
+        self.robot.program.MO(551,"O")
         
-        self.program.MO(550,"O")
+        self.robot.program.MO(550,"O")
         
         
-        self.program.MO(550,"O")
+        self.robot.program.MO(550,"O")
 
 
     def run_movement(self, movement):
@@ -701,3 +705,21 @@ class Cnc:
 class Torno:
     def __init__(self, rob_handler):
         self.robot = rob_handler
+        self.robot.program.set_lines(0)
+        self.line_movement1 = 0
+        self.line_movement2 = 0
+        self.line_movement3 = 0
+        self.line_movement4 = 0
+
+    def movement1():
+
+        pass
+
+    def movement2():
+        pass
+
+    def movement3():
+        pass
+
+    def movement4():
+        pass

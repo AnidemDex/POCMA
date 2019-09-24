@@ -2,7 +2,7 @@ from opcua import ua
 import time
 
 
-def RunMcStation(files, server_event, machine, robot, pieza):
+def RunStation(files, server_event, machine, robot, pieza):
 	"""
 	Funcion encargada de mecanizar una pieza
 	files: (String)Un string del directorio absoluto donde estan los archivos
@@ -22,7 +22,7 @@ def RunMcStation(files, server_event, machine, robot, pieza):
 
 	file = check_file(files, pieza)
 
-	machine.nc(file)
+	machine.execute.nc(file)
 	time.sleep(3)
 
 	machine.execute.open_door()

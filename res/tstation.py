@@ -3,13 +3,12 @@ import threading
 from opcua import Server
 from opcua import ua, uamethod
 
-from robots.cnc.mcprocess import RunStation
+from robots.cnc.tstation import RunStation
 
-# FIXME Añadir metodos para el control individual de las partes por medio del servidor
 class MCStation:
     def __init__(self, IP, machine, robot, file_source):
         """
-        Clase encargada de la creación de las propiedades del servidor para el centro de mecanizado
+        Clase encargada de la creaci�n de las propiedades del servidor para el centro de mecanizado
         """
         self.cnc = machine
         self.movemaster = robot
@@ -18,10 +17,10 @@ class MCStation:
         ### CONFIGURACION ###
         self.server = Server()
 
-        self.url = "opc.tcp://{}:4840/MC/".format(IP)
+        self.url = "opc.tcp://{}:8000/T/".format(IP)
         self.server.set_endpoint(self.url)
 
-        server_name = "POCMA_MCStation"
+        server_name = "POCMA_TStation"
         self.server.set_server_name(server_name)
 
         server_namespace = "http://pocma.javerianacali.edu.co"
@@ -45,13 +44,13 @@ class MCStation:
         arg_reply.Name = "Respuesta del servidor"
         arg_reply.DataType = ua.NodeId(ua.ObjectIds.String)
 
-        method_run_mc = services.add_method(workspace, "Iniciar MC", self.start_mc, [arg_archivo], [arg_reply])
+        method_run_mc = services.add_method(workspace, "Iniciar Torno", self.start_mc, [arg_archivo], [arg_reply])
         #####################################################
 
 
         ### EVENTO PARA LA CULMINACION DE LA PIEZA ###
 
-        event_type = self.server.create_custom_event_type(workspace, 'MC Ended', ua.ObjectIds.BaseEventType, [('Estado', ua.VariantType.Int32)])
+        event_type = self.server.create_custom_event_type(workspace, 'T Ended', ua.ObjectIds.BaseEventType, [('Estado', ua.VariantType.Int32)])
 
         self.end_event = self.server.get_event_generator(event_type, services)
 
