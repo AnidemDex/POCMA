@@ -93,7 +93,7 @@ class RVM1(Robot):
             self.conexion.parity = "O"
             self.conexion.stopbits = 2
             # self.conexion.rtscts = True
-            self.conexion.timeout= 2.0
+            self.conexion.timeout = 2.0
 
             self.conexion.open()
             if self.conexion.isOpen():
@@ -113,13 +113,11 @@ class CNC(Robot):
     Clase creada para el manejo exclusivo del torno CNC y la fresadora CNC
     """
 
-
     def __init__(self):
         self.execute = cnc_command.Execute(self)
         """Propiedad creada para el envio de comandos de una libreria"""
 
         Robot.__init__(self)
-
 
     def connect(self, puerto):
         """
@@ -133,7 +131,7 @@ class CNC(Robot):
             self.conexion.stopbits = 2
             self.conexion.rtscts = False
             self.conexion.xonxoff = True
-            self.conexion.timeout= 2.0
+            self.conexion.timeout = 2.0
 
             self.conexion.open()
             if self.conexion.isOpen():

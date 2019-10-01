@@ -68,7 +68,7 @@ class TStation:
 
     @uamethod
     def start_mc(self, parent_node, archivo):
-        thread = threading.Thread(target=RunMcStation, args=(self.files, self.end_event, self.cnc, self.movemaster, archivo))
+        thread = threading.Thread(target=RunStation, args=(self.files, self.end_event, self.cnc, self.movemaster, archivo))
         thread.start()
 
         return "Peticion de pieza {}".format(archivo)

@@ -4,11 +4,13 @@ from opcua import Server
 from opcua import ua, uamethod
 
 try:
-    from robots.cnc.mcprocess import RunStation
+    from robots.cnc.mcprocess import RunStation, ConfigStation
 except:
-    from res.robots.cnc.mcprocess import RunStation
+    from res.robots.cnc.mcprocess import RunStation, ConfigStation
 
 # FIXME Añadir metodos para el control individual de las partes por medio del servidor
+
+
 class MCStation:
     def __init__(self, IP, machine=None, robot=None, file_source=None):
         """
@@ -17,6 +19,7 @@ class MCStation:
         self.cnc = machine
         self.movemaster = robot
         self.files = file_source
+        ConfigStation(self.cnc, self.movemaster)
 
         ### CONFIGURACION ###
         self.server = Server()
@@ -35,7 +38,6 @@ class MCStation:
         services = nodes.add_object(workspace, "Servicios")
         #######################
 
-
         ### METODO PARA LLAMAR A LA FABRICACION DE PIEZA ###
         arg_archivo = ua.Argument()
         arg_archivo.Name = "Pieza a fabricar ->"
@@ -51,7 +53,6 @@ class MCStation:
         method_run_mc = services.add_method(workspace, "Iniciar MC", self.start_mc, [arg_archivo], [arg_reply])
         #####################################################
 
-
         ### EVENTO PARA LA CULMINACION DE LA PIEZA ###
         try:
             event_type = self.server.create_custom_event_type(workspace, 'MC Ended', ua.ObjectIds.BaseEventType, [('Estado', ua.VariantType.Int32)])
@@ -59,7 +60,6 @@ class MCStation:
             self.end_event = self.server.get_event_generator(event_type, services)
         except:
             print("Se intento enviar un mensaje al servidor pero fue imposible")
-
 
     def server_start(self):
         try:

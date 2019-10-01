@@ -1,6 +1,15 @@
 from opcua import ua
 import time
 
+is_station_ready = False
+
+
+def ConfigStation(machine, robot):
+	__robotconfig(robot)
+	__cncconfig(machine)
+	global is_station_ready
+	is_station_ready = True
+
 
 def RunStation(files, server_event, machine, robot, pieza):
 	"""
@@ -11,6 +20,42 @@ def RunStation(files, server_event, machine, robot, pieza):
 	robot: (Robot) Objeto encargado de mover el robot
 	pieza: (Int)
 	"""
+	if is_station_ready:
+		__runstationprocess(files, server_event, machine, robot, pieza)
+	else:
+		raise StationIsNotReadyError()
+	pass
+
+
+def check_file(absolute_path, pieza):
+	switcher = {
+		1: "{}/files/BOTELLA.NC".format(absolute_path),
+		2: "{}/files/SOLDADO.NC".format(absolute_path),
+		3: "{}/files/EJE.NC".format(absolute_path)
+		}
+
+	return switcher.get(pieza, None)
+
+
+def __robotconfig(robot):
+	print("[ROBOT][INFO] PROCESO DE ENSEÑANZA DEL ROBOT INICIALIZADO")
+	robot.execute.MO(550, "O")
+	robot.key_cnc.teach_routine()
+
+
+def __cncconfig(machine):
+	print("[CNC][INFO] PROCESO DE CONFIGURACION INICIADO")
+	machine.closedoor()
+	machine.execute.close_door()
+	machine.execute.code("G28 X0 Y0")
+	machine.execute.open_helper()
+	machine.execute.open_door()
+	machine.execute.open_helper()
+	machine.execute.open_door()
+	pass
+
+
+def __runstationprocess(files, server_event, machine, robot, pieza):
 	robot.key_cnc.run_movement(1)
 	machine.execute.open_helper()
 
@@ -42,21 +87,18 @@ def RunStation(files, server_event, machine, robot, pieza):
 	time.sleep(1)
 
 	reply = "Mecanizado Completado"
-	#FIXME REPARA ESTE TRYCATCH QUE ESTA HORRIBLE LA FORMA DE MANEJAR ESTE ERROR
+	# FIXME REPARA ESTE TRYCATCH QUE ESTA HORRIBLE LA FORMA DE MANEJAR ESTE ERROR
 	try:
 		server_event.event.Message = ua.LocalizedText(reply)
 		server_event.event.Estado = 2
 		server_event.trigger()
-	except:
+	except Exception:
 		print("NO SE ENVIO EL EVENTO")
 	print("[INFO]"+reply)
 
 
-def check_file(absolute_path, pieza):
-	switcher = {
-		1: "{}/files/BOTELLA.NC".format(absolute_path),
-		2: "{}/files/SOLDADO.NC".format(absolute_path),
-		3: "{}/files/EJE.NC".format(absolute_path)
-		}
-
-	return switcher.get(pieza, None)
+class StationIsNotReadyError(Exception):
+	def __str__(self):
+		return repr("""[ERROR] La estación no se encuentra lista para un correcto funcionamiento.
+		Asegurese de haber usado mcprocess.ConfigStation(machine, robot)
+		antes de usar mcprocess.RunStation(files, server_event, machine, robot, pieza)""")

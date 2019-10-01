@@ -2,6 +2,7 @@ import socket
 import configparser
 import os
 
+
 def get_ip():
     """
     Return:(str) local_ip
@@ -12,8 +13,9 @@ def get_ip():
     s.connect(("8.8.8.8", 80))
     local_ip = s.getsockname()[0]
     s.close()
-    print("Uso de la herramienta para obtencion de IPs. Resultado: {}".format(local_ip))
+    print("[TOOLS] Uso de la herramienta para obtencion de IPs. Resultado: {}".format(local_ip))
     return local_ip
+
 
 def get_port_property():
     """
@@ -25,10 +27,12 @@ def get_port_property():
     port = configuration_file['puertos']
     return port
 
+
 def get_directory():
     """
     Return: (str) directory
     Esta funcion devuelve el directorio absoluto del directorio de trabajo actual
     """
     directory = os.getcwd()
+    print("[TOOLS] Directorio de trabajo: {}".format(directory))
     return directory

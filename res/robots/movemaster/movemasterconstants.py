@@ -28,6 +28,7 @@ def HE(pos_num):
     else:
         raise RobotPositionError()
 
+
 def HO():
     """
     Home
@@ -40,7 +41,7 @@ def HO():
 def IP():
     """
     Increment Position
-	Mueve el robot a una posicion superior a la actual
+    Mueve el robot a una posicion superior a la actual
     """
     command = "IP"
     return command
@@ -56,7 +57,7 @@ def MA(position_a, position_b, grip_pos=None):
             command = "MA {}, {}, {}".format(position_a, position_b, grip_pos)
         else:
             command = "MA {}, {}".formar(position_a, position_b)
-            
+
         return command
     else:
         raise RobotPositionError()
@@ -97,7 +98,7 @@ def MO(pos_num, grip_pos=None):
             command = "MO {}, {}".format(pos_num, grip_pos)
         else:
             command = "MO {}".format(pos_num)
-    
+
         return command
     else:
         raise RobotPositionError()
@@ -205,6 +206,7 @@ def PD(pos_num, x, y, z, pitch_angle, roll_angle):
     else:
         raise RobotPositionError()
 
+
 def PL(position_a, position_b):
     """
     Position Load
@@ -221,7 +223,7 @@ def PT(pallet_num):
     """
     Pallet
     Calcula las coordenadas de una cuadricula en el numero
-    de pallet especifico e identifica las coordenadas 
+    de pallet especifico e identifica las coordenadas
     de la posicion correspondiente al pallet especificado
     """
     if isValidPallet(pallet_num):
@@ -455,6 +457,7 @@ def GP(start_grip_force, retain_grip_force, retention_time):
     command = "GP {}, {}, {}".format(start_grip_force, retain_grip_force, retention_time)
     return command
 
+
 def ID():
     """
     Input Direct
@@ -482,6 +485,7 @@ def OT(output_data):
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 RS232 READ SECTION
 """""""""""""""""""""""""""""""""""""""""""""""""""""
+
 
 def CR(count_num):
     """
@@ -562,12 +566,12 @@ def WR():
     return command
 
 
-
 def isValidPosition(position_number):
     if position_number >= 1 and position_number <= 629:
         return True
     else:
         return False
+
 
 def isValidRange(x, y):
     operation = abs(x-y)
@@ -576,11 +580,13 @@ def isValidRange(x, y):
     else:
         return False
 
+
 def isValidPoints(point_num):
     if point_num >= 1 and point_num <= 99:
         return True
     else:
         return False
+
 
 def isValidPallet(pallet_num):
     if pallet_num >= 1 and pallet_num <= 9:
@@ -588,11 +594,13 @@ def isValidPallet(pallet_num):
     else:
         return False
 
+
 def isValidColRow(col, row):
-    if (col >= 1 and col <=255) and (row >= 1 and row <= 255):
+    if (col >= 1 and col <= 255) and (row >= 1 and row <= 255):
         return True
     else:
         return False
+
 
 def isValidSpeed(speed):
     if speed >= 0 and speed <= 9:
@@ -600,21 +608,26 @@ def isValidSpeed(speed):
     else:
         return False
 
+
 class RobotPositionError(Exception):
     def __str__(self):
         return repr("[ERROR] El valor para la posicion debe ser >= 1 y <= 629")
+
 
 class RobotRangePositionError(Exception):
     def __str__(self):
         return repr("[ERROR] El rango de las posiciones dadas supera la capacidad del robot")
 
+
 class RobotGridColPointError(Exception):
     def __str__(self):
         return repr("[ERROR] El valor especificado para las columnas/filas excede la capacidad del robot")
 
+
 class RobotPalletNumberError(Exception):
     def __str__(self):
         return repr("[ERROR] El numero del pallet debe ser <= 9 y >= 1")
+
 
 class RobotInvalidSpeedError(Exception):
     def __str__(self):
