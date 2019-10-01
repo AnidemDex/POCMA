@@ -7,7 +7,7 @@ try:
 except:
     from res.robots.cnc.tprocess import RunStation
 
-class MCStation:
+class TStation:
     def __init__(self, IP, machine, robot, file_source):
         """
         Clase encargada de la creaci�n de las propiedades del servidor para el centro de mecanizado

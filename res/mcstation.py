@@ -3,11 +3,14 @@ import threading
 from opcua import Server
 from opcua import ua, uamethod
 
-from robots.cnc.mcprocess import RunStation
+try:
+    from robots.cnc.mcprocess import RunStation
+except:
+    from res.robots.cnc.mcprocess import RunStation
 
 # FIXME Añadir metodos para el control individual de las partes por medio del servidor
 class MCStation:
-    def __init__(self, IP, machine, robot, file_source):
+    def __init__(self, IP, machine=None, robot=None, file_source=None):
         """
         Clase encargada de la creación de las propiedades del servidor para el centro de mecanizado
         """
@@ -65,11 +68,11 @@ class MCStation:
             print("[DETALLES] ", error)
             print("[INFO] Revisa bien la IP {}".format(self.url))
         else:
-            print("Servidor iniciado")
+            print("Servidor iniciado en {}".format(self.url))
 
     @uamethod
     def start_mc(self, parent_node, archivo):
-        thread = threading.Thread(target=RunMcStation, args=(self.files, self.end_event, self.cnc, self.movemaster, archivo))
+        thread = threading.Thread(target=RunStation, args=(self.files, self.end_event, self.cnc, self.movemaster, archivo))
         thread.start()
 
         return "Peticion de pieza {}".format(archivo)

@@ -1,4 +1,0 @@
-puerto_torno = "COM1"
-puerto_fresa = "COM2"
-puerto_robot_torno = "COM3"
-puerto_robot_fresa = "COM4"

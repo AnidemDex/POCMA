@@ -54,9 +54,9 @@ def RunStation(files, server_event, machine, robot, pieza):
 
 def check_file(absolute_path, pieza):
 	switcher = {
-		1: "{}/BOTELLA.NC".format(absolute_path),
-		2: "{}/SOLDADO.NC".format(absolute_path),
-		3: "{}/EJE.NC".format(absolute_path)
+		1: "{}/files/BOTELLA.NC".format(absolute_path),
+		2: "{}/files/SOLDADO.NC".format(absolute_path),
+		3: "{}/files/EJE.NC".format(absolute_path)
 		}
 
 	return switcher.get(pieza, None)
