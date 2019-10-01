@@ -50,10 +50,12 @@ class MCStation:
 
 
         ### EVENTO PARA LA CULMINACION DE LA PIEZA ###
+        try:
+            event_type = self.server.create_custom_event_type(workspace, 'MC Ended', ua.ObjectIds.BaseEventType, [('Estado', ua.VariantType.Int32)])
 
-        event_type = self.server.create_custom_event_type(workspace, 'MC Ended', ua.ObjectIds.BaseEventType, [('Estado', ua.VariantType.Int32)])
-
-        self.end_event = self.server.get_event_generator(event_type, services)
+            self.end_event = self.server.get_event_generator(event_type, services)
+        except:
+            print("Se intento enviar un mensaje al servidor pero fue imposible")
 
 
     def server_start(self):

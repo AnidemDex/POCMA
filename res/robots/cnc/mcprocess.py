@@ -31,8 +31,8 @@ def RunStation(files, server_event, machine, robot, pieza):
 	limiter = 0
 	while limiter < 200:
 		machine.execute.code("M11")
-		ch = ch +1			
-	time.sleep(1) 
+		limiter += 1
+	time.sleep(1)
 
 	robot.key_cnc.run_movement(3)
 	machine.execute.open_helper()
@@ -42,10 +42,14 @@ def RunStation(files, server_event, machine, robot, pieza):
 	time.sleep(1)
 
 	reply = "Mecanizado Completado"
-	server_event.event.Message = ua.LocalizedText(reply)
-	server_event.event.Estado = 2
-	server_event.trigger()
-	print(reply)
+	#FIXME REPARA ESTE TRYCATCH QUE ESTA HORRIBLE LA FORMA DE MANEJAR ESTE ERROR
+	try:
+		server_event.event.Message = ua.LocalizedText(reply)
+		server_event.event.Estado = 2
+		server_event.trigger()
+	except:
+		print("NO SE ENVIO EL EVENTO")
+	print("[INFO]"+reply)
 
 
 def check_file(absolute_path, pieza):

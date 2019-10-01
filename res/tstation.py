@@ -2,8 +2,10 @@ import threading
 
 from opcua import Server
 from opcua import ua, uamethod
-
-from robots.cnc.tstation import RunStation
+try:
+    from robots.cnc.tprocess import RunStation
+except:
+    from res.robots.cnc.tprocess import RunStation
 
 class MCStation:
     def __init__(self, IP, machine, robot, file_source):
