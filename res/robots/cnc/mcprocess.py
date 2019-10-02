@@ -24,7 +24,6 @@ def RunStation(files, server_event, machine, robot, pieza):
 		__runstationprocess(files, server_event, machine, robot, pieza)
 	else:
 		raise StationIsNotReadyError()
-	pass
 
 
 def check_file(absolute_path, pieza):
@@ -39,20 +38,19 @@ def check_file(absolute_path, pieza):
 
 def __robotconfig(robot):
 	print("[ROBOT][INFO] PROCESO DE ENSEÑANZA DEL ROBOT INICIALIZADO")
-	robot.execute.MO(550, "O")
 	robot.key_cnc.teach_routine()
+	robot.execute.MO(550, "O")
 
 
 def __cncconfig(machine):
 	print("[CNC][INFO] PROCESO DE CONFIGURACION INICIADO")
-	machine.closedoor()
+	machine.execute.close_door()
 	machine.execute.close_door()
 	machine.execute.code("G28 X0 Y0")
 	machine.execute.open_helper()
 	machine.execute.open_door()
 	machine.execute.open_helper()
 	machine.execute.open_door()
-	pass
 
 
 def __runstationprocess(files, server_event, machine, robot, pieza):
@@ -86,7 +84,7 @@ def __runstationprocess(files, server_event, machine, robot, pieza):
 	robot.key_cnc.run_movement(4)
 	time.sleep(1)
 
-	reply = "Mecanizado Completado"
+	reply = "Proceso Mecanizado Completado"
 	# FIXME REPARA ESTE TRYCATCH QUE ESTA HORRIBLE LA FORMA DE MANEJAR ESTE ERROR
 	try:
 		server_event.event.Message = ua.LocalizedText(reply)
@@ -94,11 +92,12 @@ def __runstationprocess(files, server_event, machine, robot, pieza):
 		server_event.trigger()
 	except Exception:
 		print("NO SE ENVIO EL EVENTO")
-	print("[INFO]"+reply)
+	print("[CNC][INFO] "+reply)
 
 
 class StationIsNotReadyError(Exception):
 	def __str__(self):
-		return repr("""[ERROR] La estación no se encuentra lista para un correcto funcionamiento.
+		str_error = """[ERROR] La estación no se encuentra lista para un correcto funcionamiento.
 		Asegurese de haber usado mcprocess.ConfigStation(machine, robot)
-		antes de usar mcprocess.RunStation(files, server_event, machine, robot, pieza)""")
+		antes de usar mcprocess.RunStation(files, server_event, machine, robot, pieza)"""
+		return repr("{}".format(str_error))

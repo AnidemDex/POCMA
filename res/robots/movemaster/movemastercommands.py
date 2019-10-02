@@ -47,7 +47,7 @@ class Execute:
         except command.RobotPositionError as error:
             print(error)
 
-    
+
     def MC(self, pos_a, pos_b):
         try:
             self.robot.send(command.MC(pos_a, pos_b))
@@ -59,7 +59,7 @@ class Execute:
 
     def MJ(self, waist, shoulder, elbow, pitch, roll):
         self.robot.send(command.MJ(waist, shoulder, elbow, pitch, roll))
-  
+
 
     def MO(self, pos_num, grip_pos=None):
         try:
@@ -104,7 +104,7 @@ class Execute:
     def OG(self):
         self.robot.send(command.OG())
 
-    
+
     def PA(self, pallet, col, row):
         try:
             self.robot.send(command.PA(pallet, col, row))
@@ -117,7 +117,7 @@ class Execute:
     def PC(self, pos_a, pos_b=None):
         try:
             self.robot.send(command.PC(pos_a, pos_b))
-        except command.RobotPositionError:
+        except command.RobotPositionError as error:
             print(error)
 
 
@@ -173,7 +173,7 @@ class Execute:
 
     def CP(self, count):
         self.robot.send(command.CP(count))
-        
+
 
     def DA(self, bit):
         self.robot.send(command.DA(bit))
@@ -328,7 +328,7 @@ class Program:
         self.robot = rob_handler
         self.line = 0
 
-    
+
     def clear_lines(self):
         """
         Pone en 0 el contador de linea para esccribir un nuevo programa
@@ -375,7 +375,7 @@ class Program:
         except command.RobotPositionError as error:
             print(error)
 
-    
+
     def MC(self, pos_a, pos_b):
         try:
             self.__program(command.MC(pos_a, pos_b))
@@ -424,7 +424,7 @@ class Program:
     def OG(self):
         self.__program(command.OG())
 
-    
+
     def PA(self, pallet, col, row):
         try:
             self.__program(command.PA(pallet, col, row))
@@ -479,7 +479,7 @@ class Program:
 
     def CP(self, count):
         self.__program(command.CP(count))
-        
+
 
     def DA(self, bit):
         self.__program(command.DA(bit))
@@ -575,35 +575,35 @@ class Cnc:
     def movement1(self):
         self.robot.program.MO(557,"C")
         self.line_movement1 = self.robot.program.line
-        
+
         self.robot.program.SP(8,"H")
-        
+
         self.robot.program.MO(556,"C")
-        
+
         self.robot.program.MO(555,"C")
-        
+
         self.robot.program.MO(554,"C")
-        
+
         self.robot.program.MO(550,"C")
-        
+
         self.robot.program.MO(551,"C")
-        
+
         self.robot.program.MO(552,"C")
-        
+
         self.robot.program.SP(3,"H")
-        
+
         self.robot.program.MS(553,8,"C")
-        
+
         self.robot.program.GO()
-        
+
         self.robot.program.SP(8,"H")
-        
+
         self.robot.program.MS(552,5,"O")
-        
+
         self.robot.program.MO(551,"O")
-        
+
         self.robot.program.MO(550,"O")
-        
+
         self.robot.program.MO(550,"O")
         # 16
 
@@ -612,21 +612,21 @@ class Cnc:
 
         self.robot.program.GO()
         self.line_movement2 = self.robot.program.line
-            
+
         self.robot.program.TI(1)
-            
+
         self.robot.program.SP(9,"H")
-            
+
         self.robot.program.MO(557,"O")
-            
+
         self.robot.program.MO(556,"O")
-            
+
         self.robot.program.MO(555,"O")
-            
+
         self.robot.program.MO(554,"O")
-            
+
         self.robot.program.MO(550,"O")
-            
+
         self.robot.program.MO(550,"O")
         # 10
 
@@ -635,56 +635,56 @@ class Cnc:
 
         self.robot.program.SP(9,"H")
         self.line_movement3 = self.robot.program.line
-            
+
         self.robot.program.MO(554,"O")
-            
+
         self.robot.program.MO(555,"O")
-            
+
         self.robot.program.MO(556,"O")
-            
+
         self.robot.program.MO(557,"O")
-            
+
         self.robot.program.SP(2,"H")
-            
+
         self.robot.program.MO(558,"O")
-            
+
         self.robot.program.GC()
         # 8
 
     def movement4(self):
-        #sacar la pieza de la prensa y llevarla al pallet, despues ir a esperar 
+        #sacar la pieza de la prensa y llevarla al pallet, despues ir a esperar
         self.robot.program.MO(557,"C")
         self.line_movement4 = self.robot.program.line
-        
+
         self.robot.program.SP(8,"H")
-        
+
         self.robot.program.MO(556,"C")
-        
+
         self.robot.program.MO(555,"C")
-        
+
         self.robot.program.MO(554,"C")
-        
+
         self.robot.program.MO(550,"C")
-        
+
         self.robot.program.MO(551,"C")
-        
+
         self.robot.program.MO(552,"C")
-        
+
         self.robot.program.SP(3,"H")
-        
+
         self.robot.program.MS(553,8,"C")
-        
+
         self.robot.program.GO()
-        
+
         self.robot.program.SP(8,"H")
-        
+
         self.robot.program.MS(552,5,"O")
-        
+
         self.robot.program.MO(551,"O")
-        
+
         self.robot.program.MO(550,"O")
-        
-        
+
+
         self.robot.program.MO(550,"O")
 
 
@@ -711,15 +711,105 @@ class Torno:
         self.line_movement3 = 0
         self.line_movement4 = 0
 
-    def movement1():
+    def teach_routine(self):
+        print("[INFO] Enseñando movimiento 1")
+        self.movement1()
+        print("[INFO] Enseñando movimiento 2")
+        self.movement2()
+        print("[INFO] Enseñando movimiento 3")
+        self.movement3()
+        print("[INFO] Enseñando movimiento 4")
+        self.movement4()
 
-        pass
+    def movement1(self):
+        self.robot.program.MO(400,"O")
+        self.line_movement1 = self.robot.program.line
 
-    def movement2():
-        pass
+        self.robot.program.SP(8,"H")
 
-    def movement3():
-        pass
+        self.robot.program.MO(401,"O")
 
-    def movement4():
-        pass
+        self.robot.program.SP(5,"H")
+
+        self.robot.program.MO(402,"O")
+
+        self.robot.program.GC()
+
+        self.robot.program.TI(5)
+
+        self.robot.program.MS(403,5,"C")
+
+        self.robot.program.SP(8,"H")
+
+        self.robot.program.MO(400,"C")
+
+        self.robot.program.MO(404,"C")
+
+        self.robot.program.MO(405,"C")
+
+        self.robot.program.SP(4,"H")
+
+        self.robot.program.MO(406,"C")
+
+        self.robot.program.MO(406,"C")
+
+
+    def movement2(self):
+        self.robot.program.SP(8,"H")
+        self.line_movement2 = self.robot.program.line
+
+        self.robot.program.GO()
+
+        self.robot.program.MO(405,"O")
+
+        self.robot.program.MO(404,"O")
+
+        self.robot.program.MO(400,"O")
+
+        self.robot.program.MO(400,"O")
+
+    def movement3(self):
+        self.robot.program.MO(404,"O")
+        self.line_movement3 = self.robot.program.line
+
+        self.robot.program.MO(405,"O")
+
+        self.robot.program.MO(406,"O")
+
+        self.robot.program.GC()
+
+        self.robot.program.GC()
+
+    def movement4(self):
+        self.robot.program.MS(405,5,"C")
+        self.line_movement4 = self.robot.program.line
+
+        self.robot.program.MO(404,"C")
+
+        self.robot.program.MO(400,"C")
+
+        self.robot.program.MO(403,"C")
+
+        self.robot.program.MS(402,8,"C")
+
+        self.robot.program.GO()
+
+        self.robot.program.TI(3)
+
+        self.robot.program.MO(401,"O")
+
+        self.robot.program.MO(400,"C")
+
+        self.robot.program.MO(400,"C")
+
+    def run_movement(self, movement):
+        self.robot.conexion.flush()
+
+        if movement == 1:
+            self.robot.execute.RN(self.line_movement1, self.line_movement2-1)
+        if movement == 2:
+            self.robot.execute.RN(self.line_movement2, self.line_movement3-1)
+        if movement == 3:
+            self.robot.execute.RN(self.line_movement3, self.line_movement4-1)
+        if movement == 4:
+            self.robot.execute.RN(self.line_movement4, self.robot.program.line)

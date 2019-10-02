@@ -39,4 +39,6 @@ thread_servidor_mecanizado.start()
 
 
 input()
+servidor_torno.stop()
+servidor_mecanizado.stop()
 exit()

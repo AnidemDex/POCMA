@@ -32,7 +32,7 @@ class Robot:
                 print("[DETALLES] {}".format(error))
             else:
                 stri = "enviado correctamente por"
-                print("[INFO] {:20} {} {}".format(command, stri, rob.conexion.name))
+                print("[INFO] {:20} {} {}".format(str(command), stri, rob.conexion.name))
         else:
             return rob
 

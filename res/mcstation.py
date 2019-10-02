@@ -30,7 +30,6 @@ class MCStation:
         server_name = "POCMA_MCStation"
         self.server.set_server_name(server_name)
 
-        server_namespace = "http://pocma.javerianacali.edu.co"
         workspace = self.server.register_namespace(server_name)
 
         nodes = self.server.get_objects_node()
@@ -68,7 +67,7 @@ class MCStation:
             print("[DETALLES] ", error)
             print("[INFO] Revisa bien la IP {}".format(self.url))
         else:
-            print("Servidor iniciado en {}".format(self.url))
+            print("[CNC][SERVER] Servidor iniciado en {}".format(self.url))
 
     @uamethod
     def start_mc(self, parent_node, archivo):

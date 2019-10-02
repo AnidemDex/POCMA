@@ -3,9 +3,9 @@ import threading
 from opcua import Server
 from opcua import ua, uamethod
 try:
-    from robots.cnc.tprocess import RunStation
+    from robots.cnc.tprocess import RunStation, ConfigStation
 except:
-    from res.robots.cnc.tprocess import RunStation
+    from res.robots.cnc.tprocess import RunStation, ConfigStation
 
 class TStation:
     def __init__(self, IP, machine, robot, file_source):
@@ -15,6 +15,7 @@ class TStation:
         self.cnc = machine
         self.movemaster = robot
         self.files = file_source
+        ConfigStation(self.cnc, self.movemaster)
 
         ### CONFIGURACION ###
         self.server = Server()
@@ -25,7 +26,6 @@ class TStation:
         server_name = "POCMA_TStation"
         self.server.set_server_name(server_name)
 
-        server_namespace = "http://pocma.javerianacali.edu.co"
         workspace = self.server.register_namespace(server_name)
 
         nodes = self.server.get_objects_node()
@@ -64,7 +64,7 @@ class TStation:
             print("[DETALLES] ", error)
             print("[INFO] Revisa bien la IP {}".format(self.url))
         else:
-            print("Servidor iniciado")
+            print("[TORNO][SERVER] Servidor iniciado en {}".format(self.url))
 
     @uamethod
     def start_mc(self, parent_node, archivo):

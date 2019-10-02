@@ -24,6 +24,8 @@ class Execute:
             for command in file:
                 self.cnc.send(command)
                 line += 1
+        finally:
+            file.close()
 
     def code(self, line):
         self.cnc.send(line)
